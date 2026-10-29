@@ -1,35 +1,45 @@
+# Deployment MySQL : garde 1 pod MySQL en marche.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mysql
+  name: mysql                  
   namespace: bijouterie
   labels:
     app: bijouterie
     tier: database
 spec:
-  replicas: 1
+  replicas: 1                  
+  strategy:
+    type: Recreate             
   selector:
-    matchLabels:
+    matchLabels:              # le Deployment gere les pods qui ont ces labels
       app: bijouterie
       tier: database
-  template:
+  template:                     # modele des pods a creer
     metadata:
-      labels:
+      labels:                  
         app: bijouterie
         tier: database
     spec:
       containers:
         - name: mysql
-          image: mamadoutall/bijouterie-mysql:1
+          image: mamadoutall/bijouterie-mysql:1   
           ports:
-            - containerPort: 3306
-          envFrom:
+            - containerPort: 3306                  # port de MySQL dans le conteneur
+          envFrom:                              # charge TOUTES les cles du Secret
             - secretRef:
                 name: mysql-secret
           resources:
-            requests:
+            requests:                    # minimum reserve
               cpu: "250m"
               memory: "512Mi"
-            limits:
+            limits:                            # maximum autorise
               cpu: "500m"
               memory: "1Gi"
+          volumeMounts:                        # branche le volume dans le conteneur
+            - name: mysql-data                    
+              mountPath: /var/lib/mysql          # dossier ou MySQL ecrit ses donnees
+      volumes:                             # liste des volumes du pod
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: mysql-pvc                      # le PVC cree dans le fichier 11

@@ -1,0 +1,15 @@
+# PersistentVolumeClaim : demande de stockage pour que MySQL garde ses donnees.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+  namespace: bijouterie
+  labels:
+    app: bijouterie
+    tier: database
+spec:
+  accessModes:
+    - ReadWriteOnce          # le disque est monte par un seul noeud a la fois
+  resources:
+    requests:
+      storage: 1Gi           # taille demandee : 1 Go
