@@ -1,3 +1,4 @@
+// test ....................
 // Pipeline CI : construit les 3 images, les tague et les envoie sur Docker Hub.
 pipeline {
     agent any                          // utilise l'agent Jenkins par defaut (qui a docker)
