@@ -60,4 +60,4 @@ pipeline {
             sh 'docker logout'
         }
     }
-}
+}// test declencheur Poll SCM
