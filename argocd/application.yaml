@@ -1,0 +1,21 @@
+# Application Argo CD : dit a Argo CD quel depot Git surveiller et ou deployer.
+apiVersion: argoproj.io/v1alpha1   # version de l'API d'Argo CD
+kind: Application          # type de ressource : une application Argo CD
+metadata:
+  name: bijouterie        # nom
+  namespace: argocd         # l'Application vit dans le namespace d'Argo CD
+spec:
+  project: default         # projet Argo CD par defaut
+  source:                 # D'ou on lit les manifests
+    repoURL: https://github.com/tall0432122/bijouterie-microservices.git
+    targetRevision: main     # branche principale
+    path: k8s             # dossier qui contient les manifests
+  destination:              # ou on deploie
+    server: https://kubernetes.default.svc   # le cluster local (celui d'Argo CD)
+    namespace: bijouterie        # namespace de destination
+  syncPolicy:
+    automated:             # synchronisation automatique
+      prune: true           # supprime du cluster ce qui a ete supprime de Git
+      selfHeal: true          # remet en etat ce qui est modifie a la main
+    syncOptions:
+      - CreateNamespace=true       # cree le namespace s'il n'existe pas
