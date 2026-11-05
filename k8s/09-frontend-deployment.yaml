@@ -8,7 +8,7 @@ metadata:
     app: bijouterie
     tier: frontend
 spec:
-  replicas: 3              # 3 pods (modifie pour la demo Argo CD) 
+  replicas: 2              # 2 pods 
   selector:
     matchLabels:           # le Deployment gere les pods avec ces labels   
       app: bijouterie
