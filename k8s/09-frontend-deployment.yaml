@@ -8,29 +8,29 @@ metadata:
     app: bijouterie
     tier: frontend
 spec:
-  replicas: 2                 
+  replicas: 3              # 3 pods (modifie pour la demo Argo CD) 
   selector:
-    matchLabels:              
+    matchLabels:           # le Deployment gere les pods avec ces labels   
       app: bijouterie
       tier: frontend
-  template:                    
+  template:              # modele des pods a creer      
     metadata:
-      labels:                 
+      labels:           # doivent correspondre au selector ci-dessus      
         app: bijouterie
         tier: frontend
     spec:
       containers:
         - name: frontend
-          image: mamadoutall/bijouterie-frontend:1  
+          image: mamadoutall/bijouterie-frontend:1      # image Docker Hub, tag explicite
           ports:
-            - containerPort: 80                      
-          envFrom:                                   
+            - containerPort: 80                  # port de Nginx    
+          envFrom:                                # toutes les cles de la ConfigMap   
             - configMapRef:
                 name: frontend-config
           resources:
-            requests:                           
+            requests:                           # minimum reserve
               cpu: "50m"
               memory: "64Mi"
-            limits:                                 
+            limits:                            # maximum autorise     
               cpu: "200m"
               memory: "128Mi"
