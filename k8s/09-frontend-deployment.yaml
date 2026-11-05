@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: mamadoutall/bijouterie-frontend:1      # image Docker Hub, tag explicite
+          image: mamadoutall/bijouterie-frontend:9      # image Docker Hub, tag explicite
           ports:
             - containerPort: 80                  # port de Nginx    
           envFrom:                                # toutes les cles de la ConfigMap   

@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: mysql
-          image: mamadoutall/bijouterie-mysql:1   
+          image: mamadoutall/bijouterie-mysql:9   # image Docker Hub, tag explicite
           ports:
             - containerPort: 3306                  # port de MySQL dans le conteneur
           envFrom:                              # charge TOUTES les cles du Secret

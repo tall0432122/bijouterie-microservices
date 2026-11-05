@@ -1,4 +1,4 @@
-# Deployment du backend :
+# Deployment du backend : 2 pods de l'API Node.js en marche
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -9,29 +9,29 @@ metadata:
     tier: backend
 spec:
   replicas: 2                  # 2 pods
-  selector:
-    matchLabels:               
+  selector:                
+    matchLabels:              # le Deployment gere les pods avec ces labels 
       app: bijouterie
       tier: backend
-  template:                    
+  template:                 # modele des pods a creer         
     metadata:
-      labels:                 
-        app: bijouterie
+      labels:                 # doivent correspondre au selector ci-dessus
+        app: bijouterie		
         tier: backend
     spec:
       containers:
         - name: backend
-          image: mamadoutall/bijouterie-backend:1  
+          image: mamadoutall/bijouterie-backend:9      # image Docker
           ports:
-            - containerPort: 3000             
-          envFrom:                                 
+            - containerPort: 3000             # port de l'API
+          envFrom:                            # METHODE 1 : toutes les cles de la ConfigMap    
             - configMapRef:
                 name: backend-config
-          env:                                  
-            - name: DB_USER                   
+          env:                                  # METHODE 2 : une cle a la fois
+            - name: DB_USER                    # nom de la variable dans le conteneur
               valueFrom:
                 secretKeyRef:
-                  name: backend-secret     
+                  name: backend-secret      # le Secret
                   key: DB_USER          
             - name: DB_PASSWORD
               valueFrom:
@@ -39,9 +39,9 @@ spec:
                   name: backend-secret
                   key: DB_PASSWORD
           resources:
-            requests:                  
-              cpu: "100m"
+            requests:                  # minimum reserve
+              cpu: "100m"                    
               memory: "128Mi"
-            limits:             
+            limits:                     # maximum autorise
               cpu: "250m"
               memory: "256Mi"
